@@ -1,0 +1,94 @@
+namespace Lab1
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            label1.Text = "Версия ОС:";
+            textBox1.Text = Convert.ToString(Environment.OSVersion);
+            label2.Text = "Имя сетевого домена:";
+            textBox2.Text = Convert.ToString(Environment.UserDomainName);
+            label3.Text = "Путь к системному каталогу:";
+            textBox3.Text = Convert.ToString(Environment.SystemDirectory);
+            label4.Text = "Имя пользователя:";
+            textBox4.Text = Convert.ToString(Environment.UserName);
+            label5.Text = "Разрядность системы:";
+            var bub = Convert.ToString(Environment.Is64BitOperatingSystem);
+            if (bub == "True")
+            {
+                textBox5.Text = "Система 64-х разрядная";
+            }
+            else
+            {
+                textBox5.Text = "Система 32-х разрядная";
+            }
+            label6.Text = "Число процессоров:";
+            textBox6.Text = Convert.ToString(Environment.ProcessorCount);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

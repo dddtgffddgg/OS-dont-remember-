@@ -1,0 +1,104 @@
+using System.Windows.Forms;
+
+namespace laba7bd
+{
+    public partial class Form1 : Form
+    {
+        List<string> blocks = new List<string>();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader reader = new StreamReader(openFileDialog.FileName);
+                textBox2.Text = reader.ReadToEnd();
+                reader.Close();
+            }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int blockSize = Convert.ToInt32(numericUpDown1.Value);
+            for (int i = 0; i < textBox2.TextLength; i += blockSize)
+            {
+                if (i + blockSize <= textBox2.TextLength)
+                {
+                    blocks.Add(textBox2.Text.Substring(i, blockSize));
+                }
+                else
+                {
+                    blocks.Add(textBox2.Text.Substring(i));
+                }
+            }
+            foreach (string block in blocks)
+            {
+
+                listBox1.Items.Add(listBox1.Items.Count + 1 + ".  " + block);
+                // listBox1.Items.Add(block);
+            }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private int lastFoundedIndex = -1;
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int i;
+            for (i = lastFoundedIndex + 1; i < listBox1.Items.Count; i++)
+            {
+                string curVal = listBox1.Items[i].ToString();
+                if (curVal.IndexOf(textBox1.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    listBox1.SetSelected(i, true);
+                    listBox2
+                        .Items.Add(i + 1);
+                    lastFoundedIndex = i;
+                    break;
+                }
+            }
+            if (lastFoundedIndex > -1 && i == listBox1.Items.Count)
+            {
+                for (i = 0; i <= lastFoundedIndex; i++)
+                {
+                    var currVal = listBox1.Items[i].ToString();
+                    if (currVal.IndexOf(textBox1.Text, StringComparison.OrdinalIgnoreCase) > -1)
+                    {
+                        listBox1.SetSelected(i, true);
+                        listBox2.Items.Add(i + 1);
+                        lastFoundedIndex = i;
+                        break;
+                    }
+
+                }
+            }
+        }
+    }
+}

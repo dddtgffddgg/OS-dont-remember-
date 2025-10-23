@@ -1,0 +1,81 @@
+namespace laboratornaya3
+{
+    public partial class Form1 : Form
+    {
+        private Mutex mymutex = new Mutex();
+        int r = 0, b = 0;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        void Team2()
+        {
+            Random rnd = new Random();
+            r += rnd.Next(2, 11);
+            b -= rnd.Next(2, 11);
+            if (r <= 0)
+            {
+                label4.Text = "Бойцов нет ";
+                r = 0;
+                MessageBox.Show("Победа Команды 1");
+            }
+            else
+            {
+                label4.Text = "Осталось бойцов " + r.ToString();
+            }
+        }
+
+        void Team1()
+        {
+            Random rnd = new Random();
+            b += rnd.Next(2, 11);
+            r -= rnd.Next(2, 11);
+            if ( b <= 0)
+            {
+                label3.Text = "Бойцов нет ";
+                b = 0;
+                MessageBox.Show("Победа Команды 2");
+            }
+            else
+            {
+                label3.Text = "Осталось бойцов " + b.ToString();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            mymutex.WaitOne();
+            Team1();
+            mymutex.ReleaseMutex();
+            mymutex.WaitOne();
+            Team2();
+            mymutex.ReleaseMutex();
+            
+            CheckForIllegalCrossThreadCalls = false;
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+    
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

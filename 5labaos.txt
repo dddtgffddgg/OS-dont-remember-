@@ -1,0 +1,166 @@
+namespace Laboratornaya5
+{
+    public partial class Form1 : Form
+    {
+        string curDir;
+        string dirName = "C:\\Users\\dinas\\Desktop";
+        public Form1()
+        {
+            InitializeComponent();
+            this.BackColor = Color.PaleGoldenrod;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            listBox1.Items.Add("Каталоги");
+            if (Directory.Exists(dirName))
+            {
+                string[] dirs = Directory.GetDirectories(dirName);
+                foreach (string s in dirs)
+                {
+                    // пропускать папки с атрибутами Hidden и System
+                    var attributes = File.GetAttributes(s);
+                    if ((attributes & FileAttributes.Hidden) != 0 || (attributes & FileAttributes.System) != 0)
+                    {
+                        continue;
+                    }
+                    listBox1.Items.Add(s);
+                }
+            }
+        }
+        //"Отобразить"
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string chosenDirectory = listBox1.SelectedItem.ToString();
+            listBox1.Items.Clear();
+            listBox1.Items.Add("Каталоги");
+            if (Directory.Exists(chosenDirectory))
+            {
+                string[] dirs = Directory.GetDirectories(chosenDirectory);
+                foreach (string s in dirs)
+                {
+                    var attributes = File.GetAttributes(s);
+                    if ((attributes & FileAttributes.Hidden) != 0 || (attributes & FileAttributes.System) != 0)
+                    {
+                        continue;
+                    }
+                    listBox1.Items.Add(s);
+                }
+                listBox1.Items.Add(" ");
+                listBox1.Items.Add("Файлы");
+                string[] files = Directory.GetFiles(chosenDirectory);
+                foreach (string s in files)
+                {
+                    listBox1.Items.Add(s);
+                }
+
+
+            }
+            curDir = chosenDirectory;
+        }
+        //"Назад"
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string parDir = Convert.ToString(Directory.GetParent(curDir));
+
+            if (parDir != null)
+            {
+                listBox1.Items.Clear();
+                listBox1.Items.Add("Каталоги");
+                if (Directory.Exists(parDir))
+                {
+                    string[] dirs = Directory.GetDirectories(parDir);
+                    foreach (string s in dirs)
+                    {
+                        // пропускать папки с атрибутами Hidden и System
+                        var attributes = File.GetAttributes(s);
+                        if ((attributes & FileAttributes.Hidden) != 0 || (attributes & FileAttributes.System) != 0)
+                        {
+                            continue;
+                        }
+                        listBox1.Items.Add(s);
+                    }
+                    listBox1.Items.Add(" ");
+                    listBox1.Items.Add("Файлы");
+                    string[] files = Directory.GetFiles(parDir);
+                    foreach (string s in files)
+                    {
+                        listBox1.Items.Add(s);
+                    }
+                }
+            }
+            else { MessageBox.Show("Вы находитесь в корневом каталоге!"); }
+            curDir = parDir; //запись родительского каталога в текущий
+
+        }
+        private void Search(string dir, string searchPattern)
+        {
+            listBox1.Items.Clear();
+            listBox1.Items.Add("Результаты поиска:");
+
+            try
+            {
+                var directories = Directory.GetDirectories(dir, searchPattern, SearchOption.AllDirectories);
+
+                foreach (var d in directories)
+                {
+                    listBox1.Items.Add(d);
+                }
+
+                var files = Directory.GetFiles(dir, searchPattern, SearchOption.AllDirectories);
+
+                foreach (var f in files)
+                {
+                    listBox1.Items.Add(f);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Нет доступа к некоторым папкам или файлам.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //"Поиск файла"
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string dirToSearch = "C:\\Users\\dinas\\Desktop"; //не дает доступ к документам и настройкам, если "C://"
+            string searchPattern = textBox1.Text;
+
+            if (!string.IsNullOrEmpty(searchPattern))
+            {
+                Search(dirToSearch, searchPattern);
+            }
+            else
+            {
+                MessageBox.Show("Введите шаблон поиска.");
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form1_Load(sender, e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

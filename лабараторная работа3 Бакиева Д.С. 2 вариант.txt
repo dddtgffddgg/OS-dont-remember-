@@ -1,0 +1,74 @@
+namespace lab3.db
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        int firstteam = 0, secondteam = 0;
+
+        void FirstTeam()
+        {
+            Random rnd = new Random();
+            firstteam += rnd.Next(0, 100);
+            secondteam -= rnd.Next(0, 100);
+            if (firstteam <= 0) 
+            {
+                label4.Text = "команды нет";
+                firstteam = 0;
+                MessageBox.Show("Победа второй команды");
+            }
+            else 
+            {
+                label4.Text = "команда есть" + firstteam.ToString();
+            }
+        }
+
+        void SecondTeam() 
+        {
+            Random rnd = new Random();
+            secondteam += rnd.Next(0, 100);
+            firstteam -= rnd.Next(0, 100);
+            if (secondteam <= 0) 
+            {
+                label3.Text = "команды нет";
+                secondteam = 0;
+                MessageBox.Show("Победа первой команды");
+            }
+            else 
+            {
+                label3.Text = "команда есть" + secondteam.ToString();
+            }
+        }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Thread FT = new Thread(FirstTeam);
+            Thread ST = new Thread(SecondTeam);
+            CheckForIllegalCrossThreadCalls = false;
+            FT.Start();
+            ST.Start();
+        }
+    }
+}

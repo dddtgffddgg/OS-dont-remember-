@@ -1,0 +1,84 @@
+using System;
+using System.IO;
+using System.Windows.Forms;
+
+namespace FileBrowser
+{
+    public partial class Form1 : Form
+    {
+        private string currentDir;
+
+        public Form1()
+        {
+            InitializeComponent();
+            currentDir = Directory.GetCurrentDirectory();
+            DisplayFilesAndFolders(currentDir);
+        }
+
+        private void DisplayFilesAndFolders(string path)
+        {
+            try
+            {
+                listView1.Items.Clear();
+                DirectoryInfo directory = new DirectoryInfo(path);
+
+                if (directory.Parent != null)
+                {
+                    ListViewItem item = new ListViewItem("...");
+                    item.SubItems.Add("");
+                    item.SubItems.Add("Folder");
+                    item.Tag = directory.Parent.FullName;
+                    listView1.Items.Add(item);
+                }
+
+                foreach (DirectoryInfo dir in directory.GetDirectories())
+                {
+                    ListViewItem item = new ListViewItem(dir.Name);
+                    item.SubItems.Add(dir.LastWriteTime.ToString());
+                    item.SubItems.Add("Folder");
+                    item.Tag = dir.FullName;
+                    listView1.Items.Add(item);
+                }
+
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    ListViewItem item = new ListViewItem(file.Name);
+                    item.SubItems.Add(file.LastWriteTime.ToString());
+                    item.SubItems.Add("File");
+                    item.Tag = file.FullName;
+                    listView1.Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                string path = (string)listView1.SelectedItems[0].Tag;
+                if (Directory.Exists(path))
+                {
+                    currentDir = path;
+                    DisplayFilesAndFolders(currentDir);
+                }
+                else
+                {
+                    MessageBox.Show("Selected item is not a folder.", "Error");
+                }
+            }
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            currentDir = Directory.GetParent(currentDir)?.FullName;
+            if (currentDir != null)
+            {
+                DisplayFilesAndFolders(currentDir);
+            }
+        }
+    }
+}
